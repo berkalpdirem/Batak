@@ -156,7 +156,7 @@ namespace Batak
 
             for (int i = 0; i < ListName.Count; i++)
             {
-                //Cards visualizations
+                //Cards visualizations 
                 PictureBox picture = new PictureBox();
                 picture.Image = allPlayerHands[panelList.Count - 1][i].Image;
                 picture.Size = picture.Image.Size;
