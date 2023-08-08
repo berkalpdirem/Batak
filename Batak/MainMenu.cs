@@ -10,17 +10,16 @@ using System.Windows.Forms;
 
 namespace Batak
 {
+    
     public partial class MainMenu : Form
     {
         public betPage betPageDialog = new betPage();
-        
-        
+
         public MainMenu()
         {
             InitializeComponent();
-            betPageDialog.mainMenu = this;
+            betPageDialog.mainMenuPage = this;
         }
-
         //Global variables and Lists ---------------------------------------------------------------------------------------
 
         Random rnd = new Random();
@@ -31,10 +30,11 @@ namespace Batak
         List<Cards> player1Cards = new List<Cards>();
         List<Cards> player2Cards = new List<Cards>();
         List<Cards> player3Cards = new List<Cards>();
+        List<Cards> midCards = new List<Cards>();
 
         List<Control> panelList = new List<Control>();
+        public string startingPlayer;
 
-        
         #region PrePlayMethods
         public void CreateDeck()
         {
@@ -54,6 +54,7 @@ namespace Batak
                     card.Type = cardTypeList[x];
                     card.Value = cardNoList[y];
                     card.Image= deckPic.Clone(new Rectangle(y * w, x * h, w, h), deckPic.PixelFormat);
+                    card.Image.Tag = card;
                     cardDeck.Add(card);
                 }
             }
@@ -143,7 +144,7 @@ namespace Batak
         #region Animation and Vizualition Methods
 
 
-
+        
         /// <summary>
         /// Create Card's picture box for MainMenu
         /// </summary>
@@ -165,8 +166,9 @@ namespace Batak
 
                 //Cards Events;
                 picture.Enabled = false;
+                
+                picture.Click += new EventHandler(picture_Click);
                 //picture.DoubleClick += new EventHandler(picture_doubleClick);
-                //picture.Click += new EventHandler(picture_Click);
             }
         }
 
@@ -181,14 +183,156 @@ namespace Batak
             visualization(panelPlayer2, player2Cards);
             visualization(panelPlayer3, player3Cards);
 
-            //visualization(panelMid, midCards);
+            visualization(panel_Mid, midCards);
         }
 
+        public void picture_Click(object sender, EventArgs e)
+        {
+            PictureBox cardPicturebox = (sender as PictureBox);
+            Cards relatedCard = cardPicturebox.Image.Tag as Cards;
 
+            cardPicturebox.Location = new Point(midCards.Count * 20, 0);
+            for (int i = 0; i < 4; i++)
+            {
+                if (relatedCard.Ownership == playerList[i])
+                {
+                    allPlayerHands[i].Remove(relatedCard);
+                }
+            }
+            midCards.Add(relatedCard);
+
+            panel_Mid.Controls.Add(cardPicturebox);
+            cardPicturebox.BringToFront();
+
+            if (midCards.Count < 4)
+            {
+                startRound();
+            }
+            else
+            {
+                EvaluationMidCards();
+            }
+        }
         #endregion
 
         #region Game Situation
+        
+        public void startRound()
+        {
+            if (startingPlayer == "player0")
+            {
+                lblPlayerOrder.Text = "player0";
+                foreach (PictureBox cards in panelPlayer3.Controls)
+                {
+                    cards.Enabled = false;
+                }
+                foreach (PictureBox cards in panelPlayer0.Controls)
+                {
+                    cards.Enabled = true;
+                }
 
+                //İlk atılan kartın tipinden kart atma zorunluluğu
+                if (midCards.Count != 0)
+                {
+                    foreach (PictureBox CardsImage in panelPlayer0.Controls)
+                    {
+                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
+                        {
+                            CardsImage.Enabled = false;
+                        }
+                    }
+                }
+                startingPlayer = "player1";
+            }
+
+            else if (startingPlayer == "player1")
+            {
+                lblPlayerOrder.Text = "player1";
+                foreach (PictureBox cards in panelPlayer0.Controls)
+                {
+                    cards.Enabled = false;
+                }
+                foreach (PictureBox cards in panelPlayer1.Controls)
+                {
+                    cards.Enabled = true;
+                }
+                //İlk atılan kartın tipinden kart atma zorunluluğu
+                if (midCards.Count != 0)
+                {
+                    foreach (PictureBox CardsImage in panelPlayer1.Controls)
+                    {
+                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
+                        {
+                            CardsImage.Enabled = false;
+                        }
+                    }
+                }
+                startingPlayer = "player2";
+            }
+
+            else if (startingPlayer == "player2")
+            {
+                lblPlayerOrder.Text = "player2";
+                foreach (PictureBox cards in panelPlayer1.Controls)
+                {
+                    cards.Enabled = false;
+                }
+                foreach (PictureBox cards in panelPlayer2.Controls)
+                {
+                    cards.Enabled = true;
+                }
+                //İlk atılan kartın tipinden kart atma zorunluluğu
+                if (midCards.Count != 0)
+                {
+                    foreach (PictureBox CardsImage in panelPlayer2.Controls)
+                    {
+                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
+                        {
+                            CardsImage.Enabled = false;
+                        }
+                    }
+                }
+                startingPlayer = "player3";
+                
+            }
+
+            else if (startingPlayer == "player3")
+            {
+                lblPlayerOrder.Text = "player3";
+                foreach (PictureBox cards in panelPlayer2.Controls)
+                {
+                    cards.Enabled = false;
+                }
+                foreach (PictureBox cards in panelPlayer3.Controls)
+                {
+                    cards.Enabled = true;
+                }
+                //İlk atılan kartın tipinden kart atma zorunluluğu
+                if (midCards.Count != 0)
+                {
+                    foreach (PictureBox CardsImage in panelPlayer3.Controls)
+                    {
+                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
+                        {
+                            CardsImage.Enabled = false;
+                        }
+                    }
+                }
+                startingPlayer = "player0";
+            }
+        }
+
+        public void EvaluationMidCards()
+        {
+            foreach (Control relatedPanel in panelList)
+            {
+                foreach (PictureBox cardsImages in relatedPanel.Controls)
+                {
+                    cardsImages.Enabled = false;
+                }
+            }
+            MessageBox.Show("Round bitti");
+        }
         public void clearLists()
         {
             player0Cards.Clear();
@@ -205,7 +349,8 @@ namespace Batak
 
         }
         #endregion
-        
+
+        #region Form Load and Button Properties
         private void btn_NewGame_Click(object sender, EventArgs e)
         {
             clearLists();
@@ -217,7 +362,11 @@ namespace Batak
             visualizationAllCards();
 
             betPageDialog.ShowDialog();
-            
+
+            startRound();
+
+
+
         }
 
         private void btn_Exit_Click(object sender, EventArgs e)
@@ -230,6 +379,7 @@ namespace Batak
 
         }
     }
+    #endregion
     public class Cards
     {
         public string Type { get; set; }
@@ -237,6 +387,7 @@ namespace Batak
         public Image Image { get; set; }
         public string Ownership { get; set; }
     }
+
 
 
 

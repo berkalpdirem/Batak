@@ -12,7 +12,7 @@ namespace Batak
 {
     public partial class betPage : Form
     {
-        public MainMenu mainMenu;
+        public MainMenu mainMenuPage;
         public betPage()
         {
             InitializeComponent();
@@ -31,7 +31,7 @@ namespace Batak
 
         private void betPage_Load(object sender, EventArgs e)
         {
-            mainMenu.betPageDialog = this;
+            mainMenuPage.betPageDialog = this;
             yzBetDetermination();
             
             
@@ -42,21 +42,25 @@ namespace Batak
             if (player0bet > player1bet && player0bet > player2bet && player0bet > player3bet)
             {
                 betWinner = "player0";
+                mainMenuPage.startingPlayer = betWinner;
                 bet = player0bet;
             }
             else if (player1bet > player0bet && player1bet > player2bet && player1bet > player3bet)
             {
                 betWinner = "player1";
+                mainMenuPage.startingPlayer = betWinner;
                 bet = player1bet;
             }
             else if (player2bet > player0bet && player2bet > player1bet && player2bet > player3bet)
             {
                 betWinner = "player2";
+                mainMenuPage.startingPlayer = betWinner;
                 bet = player2bet;
             }
             else if (player3bet > player0bet && player3bet > player1bet && player3bet > player2bet)
             {
                 betWinner = "player3";
+                mainMenuPage.startingPlayer = betWinner;
                 bet = player3bet;
             }
         }
@@ -83,12 +87,14 @@ namespace Batak
         private void btnConfirmBet_Click(object sender, EventArgs e)
         {
             selectedSpacialType = lblSpacialType.Text;
-            mainMenu.gbBetSummary.Visible = true;
-            mainMenu.gbGameInfo.Visible = true;
+            mainMenuPage.gbBetSummary.Visible = true;
+            mainMenuPage.gbGameInfo.Visible = true;
 
-            mainMenu.lblBet.Text = bet.ToString() ;
-            mainMenu.lblBetWinner.Text = betWinner;
-            mainMenu.lblSpacialType.Text = selectedSpacialType; 
+            mainMenuPage.lblBet.Text = bet.ToString() ;
+            mainMenuPage.lblBetWinner.Text = betWinner;
+            mainMenuPage.lblPlayerOrder.Text = betWinner;
+            mainMenuPage.startingPlayer = betWinner;
+            mainMenuPage.lblSpacialType.Text = selectedSpacialType; 
             Close();
         }
 
@@ -143,26 +149,26 @@ namespace Batak
         private void pbClub_Click(object sender, EventArgs e)
         {
             lblSpacialType.Text = "Clubs";
-            mainMenu.pbSpacialType.Image = Batak.Properties.Resources.clubs;
+            mainMenuPage.pbSpacialType.Image = Batak.Properties.Resources.clubs;
             
         }
 
         private void pbHeart_Click(object sender, EventArgs e)
         {
             lblSpacialType.Text = "Heart";
-            mainMenu.pbSpacialType.Image = Batak.Properties.Resources.hearts;
+            mainMenuPage.pbSpacialType.Image = Batak.Properties.Resources.hearts;
         }
 
         private void pbSpade_Click(object sender, EventArgs e)
         {
             lblSpacialType.Text = "Spade";
-            mainMenu.pbSpacialType.Image = Batak.Properties.Resources.spades;
+            mainMenuPage.pbSpacialType.Image = Batak.Properties.Resources.spades;
         }
 
         private void pbDiamond_Click(object sender, EventArgs e)
         {
             lblSpacialType.Text = "Diamond";
-            mainMenu.pbSpacialType.Image = Batak.Properties.Resources.dimonds;
+            mainMenuPage.pbSpacialType.Image = Batak.Properties.Resources.dimonds;
         }
 
         #endregion

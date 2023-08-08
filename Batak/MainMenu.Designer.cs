@@ -49,12 +49,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.lblPlayer3Score = new System.Windows.Forms.Label();
+            this.lblPlayer2Score = new System.Windows.Forms.Label();
+            this.lblPlayer1Score = new System.Windows.Forms.Label();
+            this.lblPlayer0Score = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.lblPlayer0Score = new System.Windows.Forms.Label();
-            this.lblPlayer1Score = new System.Windows.Forms.Label();
-            this.lblPlayer2Score = new System.Windows.Forms.Label();
-            this.lblPlayer3Score = new System.Windows.Forms.Label();
             this.gbBetSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).BeginInit();
             this.gbGameInfo.SuspendLayout();
@@ -117,9 +117,9 @@
             // 
             // panel_Mid
             // 
-            this.panel_Mid.Location = new System.Drawing.Point(335, 178);
+            this.panel_Mid.Location = new System.Drawing.Point(428, 224);
             this.panel_Mid.Name = "panel_Mid";
-            this.panel_Mid.Size = new System.Drawing.Size(320, 160);
+            this.panel_Mid.Size = new System.Drawing.Size(135, 114);
             this.panel_Mid.TabIndex = 0;
             // 
             // gbBetSummary
@@ -258,6 +258,42 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Player1 Score:";
             // 
+            // lblPlayer3Score
+            // 
+            this.lblPlayer3Score.AutoSize = true;
+            this.lblPlayer3Score.Location = new System.Drawing.Point(78, 68);
+            this.lblPlayer3Score.Name = "lblPlayer3Score";
+            this.lblPlayer3Score.Size = new System.Drawing.Size(13, 13);
+            this.lblPlayer3Score.TabIndex = 0;
+            this.lblPlayer3Score.Text = "0";
+            // 
+            // lblPlayer2Score
+            // 
+            this.lblPlayer2Score.AutoSize = true;
+            this.lblPlayer2Score.Location = new System.Drawing.Point(78, 55);
+            this.lblPlayer2Score.Name = "lblPlayer2Score";
+            this.lblPlayer2Score.Size = new System.Drawing.Size(13, 13);
+            this.lblPlayer2Score.TabIndex = 0;
+            this.lblPlayer2Score.Text = "0";
+            // 
+            // lblPlayer1Score
+            // 
+            this.lblPlayer1Score.AutoSize = true;
+            this.lblPlayer1Score.Location = new System.Drawing.Point(78, 42);
+            this.lblPlayer1Score.Name = "lblPlayer1Score";
+            this.lblPlayer1Score.Size = new System.Drawing.Size(13, 13);
+            this.lblPlayer1Score.TabIndex = 0;
+            this.lblPlayer1Score.Text = "0";
+            // 
+            // lblPlayer0Score
+            // 
+            this.lblPlayer0Score.AutoSize = true;
+            this.lblPlayer0Score.Location = new System.Drawing.Point(78, 29);
+            this.lblPlayer0Score.Name = "lblPlayer0Score";
+            this.lblPlayer0Score.Size = new System.Drawing.Size(13, 13);
+            this.lblPlayer0Score.TabIndex = 0;
+            this.lblPlayer0Score.Text = "0";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -275,42 +311,6 @@
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Player Order:";
-            // 
-            // lblPlayer0Score
-            // 
-            this.lblPlayer0Score.AutoSize = true;
-            this.lblPlayer0Score.Location = new System.Drawing.Point(78, 29);
-            this.lblPlayer0Score.Name = "lblPlayer0Score";
-            this.lblPlayer0Score.Size = new System.Drawing.Size(13, 13);
-            this.lblPlayer0Score.TabIndex = 0;
-            this.lblPlayer0Score.Text = "0";
-            // 
-            // lblPlayer1Score
-            // 
-            this.lblPlayer1Score.AutoSize = true;
-            this.lblPlayer1Score.Location = new System.Drawing.Point(78, 42);
-            this.lblPlayer1Score.Name = "lblPlayer1Score";
-            this.lblPlayer1Score.Size = new System.Drawing.Size(13, 13);
-            this.lblPlayer1Score.TabIndex = 0;
-            this.lblPlayer1Score.Text = "0";
-            // 
-            // lblPlayer2Score
-            // 
-            this.lblPlayer2Score.AutoSize = true;
-            this.lblPlayer2Score.Location = new System.Drawing.Point(78, 55);
-            this.lblPlayer2Score.Name = "lblPlayer2Score";
-            this.lblPlayer2Score.Size = new System.Drawing.Size(13, 13);
-            this.lblPlayer2Score.TabIndex = 0;
-            this.lblPlayer2Score.Text = "0";
-            // 
-            // lblPlayer3Score
-            // 
-            this.lblPlayer3Score.AutoSize = true;
-            this.lblPlayer3Score.Location = new System.Drawing.Point(78, 68);
-            this.lblPlayer3Score.Name = "lblPlayer3Score";
-            this.lblPlayer3Score.Size = new System.Drawing.Size(13, 13);
-            this.lblPlayer3Score.TabIndex = 0;
-            this.lblPlayer3Score.Text = "0";
             // 
             // MainMenu
             // 
@@ -352,7 +352,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblPlayerOrder;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -368,6 +367,7 @@
         public System.Windows.Forms.Label lblBetWinner;
         public System.Windows.Forms.Label lblSpacialType;
         public System.Windows.Forms.GroupBox gbGameInfo;
+        public System.Windows.Forms.Label lblPlayerOrder;
     }
 }
 
