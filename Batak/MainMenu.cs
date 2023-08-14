@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Batak
 {
-    
+
     public partial class MainMenu : Form
     {
         public betPage betPageDialog = new betPage();
@@ -24,7 +24,7 @@ namespace Batak
 
         Random rnd = new Random();
         string[] playerList = new string[] { "player0", "player1", "player2", "player3" };
-        
+
         List<List<Cards>> allPlayerHands = new List<List<Cards>>();
         List<Cards> player0Cards = new List<Cards>();
         List<Cards> player1Cards = new List<Cards>();
@@ -39,9 +39,9 @@ namespace Batak
         public void CreateDeck()
         {
             //Cards creation;
-            string[] cardTypeList = new string[] { "Clubs", "Spades", "Hearts", "Diamonds" };
+            string[] cardTypeList = new string[] { "Club", "Spade", "Heart", "Diamond" };
             int[] cardNoList = new int[] { 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-            
+
             int w = 73; //Card's x Dimensions
             int h = 98; //Card's y Dimensions
             Bitmap deckPic = Batak.Properties.Resources.deckPic;
@@ -53,7 +53,7 @@ namespace Batak
                     Cards card = new Cards();
                     card.Type = cardTypeList[x];
                     card.Value = cardNoList[y];
-                    card.Image= deckPic.Clone(new Rectangle(y * w, x * h, w, h), deckPic.PixelFormat);
+                    card.Image = deckPic.Clone(new Rectangle(y * w, x * h, w, h), deckPic.PixelFormat);
                     card.Image.Tag = card;
                     cardDeck.Add(card);
                 }
@@ -94,29 +94,29 @@ namespace Batak
             List<Cards> tempListHearts = new List<Cards>();
             List<Cards> tempListSpades = new List<Cards>();
             List<Cards> tempListDiamonds = new List<Cards>();
-            
+
 
             for (int i = 0; i < fixingList.Count; i++)
             {
-                if (fixingList[i].Type == "Clubs")
+                if (fixingList[i].Type == "Club")
                 {
                     tempListClubs.Add(fixingList[i]);
                     tempListClubs.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));
                 }
-                else if (fixingList[i].Type == "Hearts")
+                else if (fixingList[i].Type == "Heart")
                 {
                     tempListHearts.Add(fixingList[i]);
                     tempListHearts.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));
                 }
-                else if (fixingList[i].Type == "Spades")
+                else if (fixingList[i].Type == "Spade")
                 {
                     tempListSpades.Add(fixingList[i]);
-                    tempListSpades.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));  
+                    tempListSpades.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));
                 }
-                else if (fixingList[i].Type == "Diamonds")
+                else if (fixingList[i].Type == "Diamond")
                 {
                     tempListDiamonds.Add(fixingList[i]);
-                    tempListDiamonds.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));  
+                    tempListDiamonds.Sort((card1, card2) => card2.Value.CompareTo(card1.Value));
                 }
             }
             // Mergiing created sublist and clear all of them
@@ -138,13 +138,11 @@ namespace Batak
 
         }
 
-
+        
         #endregion
 
         #region Animation and Vizualition Methods
 
-
-        
         /// <summary>
         /// Create Card's picture box for MainMenu
         /// </summary>
@@ -166,7 +164,7 @@ namespace Batak
 
                 //Cards Events;
                 picture.Enabled = false;
-                
+
                 picture.Click += new EventHandler(picture_Click);
                 //picture.DoubleClick += new EventHandler(picture_doubleClick);
             }
@@ -200,9 +198,10 @@ namespace Batak
                 }
             }
             midCards.Add(relatedCard);
-
             panel_Mid.Controls.Add(cardPicturebox);
             cardPicturebox.BringToFront();
+            cardPicturebox.Enabled = false;
+
 
             if (midCards.Count < 4)
             {
@@ -216,114 +215,143 @@ namespace Batak
         #endregion
 
         #region Game Situation
-        
+
+        /// <summary>
+        /// Changing the enable feature of the relevant panel's controls according to the game rules
+        /// </summary>
+        /// <param name="selectedPanel"></param>
+        public void CardpPlayingRules(Panel relatedPanel)
+        {
+            //Player can play the first card of the Round as player pleases.
+            if (midCards.Count == 0)
+            {
+                foreach (PictureBox CardsImage in relatedPanel.Controls)
+                {
+                    CardsImage.Enabled = true;
+                }
+            }
+            //If the hand played is not the first hand of the round, it must be played according to the following rules
+            else
+            {
+                Cards firstPlayedCard = (Cards)midCards[0];
+                Cards lastPlayedCard = (Cards)midCards[midCards.Count - 1];
+
+
+                //------------------------------------------------------Simple Rules-------------------------------------------
+
+                //Obligation to throw a card from the first type of card thrown
+                //And obligation to throw the larger card than the first discarded card
+                foreach (PictureBox CardsImage in relatedPanel.Controls)
+                {
+                    Cards selectedCard = (Cards)CardsImage.Image.Tag;
+                    if (firstPlayedCard.Type == selectedCard.Type && lastPlayedCard.Value < selectedCard.Value)
+                    {
+                        CardsImage.Enabled = true;
+                    }
+                }
+
+                //------------------------------------------------------Complex Rules-------------------------------------------
+
+                //If all cards are disenable, the smaller card of the first throwed type must be discarded.
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        Cards selectedCard = (Cards)CardsImage.Image.Tag;
+                        if (firstPlayedCard.Type == selectedCard.Type)
+                        {
+                            CardsImage.Enabled = true;
+                        }
+                    }
+                }
+
+                //If player still can't throw cards, special cards will be activated
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        Cards card = (Cards)CardsImage.Image.Tag;
+                        if (card.Type == lblSpacialType.Text)
+                        {
+                            CardsImage.Enabled = true;
+                        }
+                    }
+                }
+
+                //If player doesn't have a special card, player can discard any card player wants.
+
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        CardsImage.Enabled = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// // Checking the enable property of all cards to be false to related panel
+        /// </summary>
+        /// <param name="relatedPanel"></param>
+        /// <returns></returns>
+        public bool allCardsDisenable(Panel relatedPanel)
+        {
+            bool result = true;
+            foreach (PictureBox CardsImage in relatedPanel.Controls)
+            {
+                if (CardsImage.Enabled)
+                {
+                    return false;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Allows players to play in clockwise order
+        /// </summary>
         public void startRound()
         {
+            //Disable all cards for next player playing
+            for (int i = 0; i < 4; i++)
+            {
+                foreach (PictureBox CardsImage in panelList[i].Controls)
+                {
+                    CardsImage.Enabled = false;
+                }
+            }
+
+            //Whoever's turn is to enable their respective cards according to the game rules.
             if (startingPlayer == "player0")
             {
                 lblPlayerOrder.Text = "player0";
-                foreach (PictureBox cards in panelPlayer3.Controls)
-                {
-                    cards.Enabled = false;
-                }
-                foreach (PictureBox cards in panelPlayer0.Controls)
-                {
-                    cards.Enabled = true;
-                }
-
-                //İlk atılan kartın tipinden kart atma zorunluluğu
-                if (midCards.Count != 0)
-                {
-                    foreach (PictureBox CardsImage in panelPlayer0.Controls)
-                    {
-                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
-                        {
-                            CardsImage.Enabled = false;
-                        }
-                    }
-                }
+                CardpPlayingRules(panelPlayer0);
                 startingPlayer = "player1";
             }
-
             else if (startingPlayer == "player1")
             {
                 lblPlayerOrder.Text = "player1";
-                foreach (PictureBox cards in panelPlayer0.Controls)
-                {
-                    cards.Enabled = false;
-                }
-                foreach (PictureBox cards in panelPlayer1.Controls)
-                {
-                    cards.Enabled = true;
-                }
-                //İlk atılan kartın tipinden kart atma zorunluluğu
-                if (midCards.Count != 0)
-                {
-                    foreach (PictureBox CardsImage in panelPlayer1.Controls)
-                    {
-                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
-                        {
-                            CardsImage.Enabled = false;
-                        }
-                    }
-                }
+                CardpPlayingRules(panelPlayer1);
                 startingPlayer = "player2";
             }
-
             else if (startingPlayer == "player2")
             {
                 lblPlayerOrder.Text = "player2";
-                foreach (PictureBox cards in panelPlayer1.Controls)
-                {
-                    cards.Enabled = false;
-                }
-                foreach (PictureBox cards in panelPlayer2.Controls)
-                {
-                    cards.Enabled = true;
-                }
-                //İlk atılan kartın tipinden kart atma zorunluluğu
-                if (midCards.Count != 0)
-                {
-                    foreach (PictureBox CardsImage in panelPlayer2.Controls)
-                    {
-                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
-                        {
-                            CardsImage.Enabled = false;
-                        }
-                    }
-                }
+                CardpPlayingRules(panelPlayer2);
                 startingPlayer = "player3";
-                
             }
-
             else if (startingPlayer == "player3")
             {
                 lblPlayerOrder.Text = "player3";
-                foreach (PictureBox cards in panelPlayer2.Controls)
-                {
-                    cards.Enabled = false;
-                }
-                foreach (PictureBox cards in panelPlayer3.Controls)
-                {
-                    cards.Enabled = true;
-                }
-                //İlk atılan kartın tipinden kart atma zorunluluğu
-                if (midCards.Count != 0)
-                {
-                    foreach (PictureBox CardsImage in panelPlayer3.Controls)
-                    {
-                        if (((Cards)midCards[0].Image.Tag).Type != ((Cards)CardsImage.Image.Tag).Type)
-                        {
-                            CardsImage.Enabled = false;
-                        }
-                    }
-                }
+                CardpPlayingRules(panelPlayer3);
                 startingPlayer = "player0";
             }
         }
 
         public void EvaluationMidCards()
         {
+            // When the round is over, the enabled property of all cards is doing false
             foreach (Control relatedPanel in panelList)
             {
                 foreach (PictureBox cardsImages in relatedPanel.Controls)
@@ -332,6 +360,10 @@ namespace Batak
                 }
             }
             MessageBox.Show("Round bitti");
+            midCards.Clear();
+            panel_Mid.Controls.Clear();
+            startRound();
+
         }
         public void clearLists()
         {
@@ -375,7 +407,7 @@ namespace Batak
         }
         private void MainMenu_Load(object sender, EventArgs e)
         {
-            
+
 
         }
     }
