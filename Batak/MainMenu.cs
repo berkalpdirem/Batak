@@ -19,6 +19,7 @@ namespace Batak
         {
             InitializeComponent();
             betPageDialog.mainMenuPage = this;
+
         }
         //Global variables and Lists ---------------------------------------------------------------------------------------
 
@@ -34,6 +35,8 @@ namespace Batak
 
         List<Control> panelList = new List<Control>();
         public string startingPlayer;
+
+
 
         #region PrePlayMethods
         public void CreateDeck()
@@ -138,7 +141,7 @@ namespace Batak
 
         }
 
-        
+
         #endregion
 
         #region Animation and Vizualition Methods
@@ -244,7 +247,7 @@ namespace Batak
                 foreach (PictureBox CardsImage in relatedPanel.Controls)
                 {
                     Cards selectedCard = (Cards)CardsImage.Image.Tag;
-                    if (firstPlayedCard.Type == selectedCard.Type && lastPlayedCard.Value < selectedCard.Value)
+                    if (firstPlayedCard.Type == selectedCard.Type && cardComparasionMidCards(midCards).Value < selectedCard.Value)
                     {
                         CardsImage.Enabled = true;
                     }
@@ -322,6 +325,7 @@ namespace Batak
                 }
             }
 
+
             //Whoever's turn is to enable their respective cards according to the game rules.
             if (startingPlayer == "player0")
             {
@@ -349,6 +353,33 @@ namespace Batak
             }
         }
 
+        /// <summary>
+        /// Card comparasion at mid panel for round winner.
+        /// </summary>
+        /// <param name="midCards"></param>
+        /// <returns></returns>
+        public Cards cardComparasionMidCards(List<Cards> midCards)
+        {
+            string spacialType = lblSpacialType.Text;
+            Cards winnerCard = midCards[0];
+            foreach (Cards relatedCard in midCards)
+            {
+                if (winnerCard.Type == relatedCard.Type && winnerCard.Value < relatedCard.Value)
+                {
+                    winnerCard = relatedCard;
+                }
+                else if (winnerCard.Type != relatedCard.Type && winnerCard.Type != spacialType && relatedCard.Type == spacialType)
+                {
+                    winnerCard = relatedCard;
+                }
+            }
+            return winnerCard;
+        }
+
+
+        /// <summary>
+        /// What to do after detecting the winner of the  mid panel
+        /// </summary>
         public void EvaluationMidCards()
         {
             // When the round is over, the enabled property of all cards is doing false
@@ -359,9 +390,30 @@ namespace Batak
                     cardsImages.Enabled = false;
                 }
             }
-            MessageBox.Show("Round bitti");
+            //Identification of the winner in the round
+            Cards winnerCard = cardComparasionMidCards(midCards);
+            testMidPanelWinner.Image = winnerCard.Image;
+            startingPlayer = winnerCard.Ownership;
+            if (startingPlayer == "player0")
+            {
+                lblPlayer0Score.Text = ((Convert.ToInt32(lblPlayer0Score.Text)) + 1).ToString();
+            }
+            else if (startingPlayer == "player1")
+            {
+                lblPlayer1Score.Text = ((Convert.ToInt32(lblPlayer1Score.Text)) + 1).ToString();
+            }
+            else if (startingPlayer == "player2")
+            {
+                lblPlayer2Score.Text = ((Convert.ToInt32(lblPlayer2Score.Text)) + 1).ToString();
+            }
+            else if (startingPlayer == "player3")
+            {
+                lblPlayer3Score.Text = ((Convert.ToInt32(lblPlayer3Score.Text)) + 1).ToString();
+            }
+
             midCards.Clear();
             panel_Mid.Controls.Clear();
+            MessageBox.Show("Round bitti");
             startRound();
 
         }
@@ -396,9 +448,6 @@ namespace Batak
             betPageDialog.ShowDialog();
 
             startRound();
-
-
-
         }
 
         private void btn_Exit_Click(object sender, EventArgs e)
@@ -420,6 +469,27 @@ namespace Batak
         public string Ownership { get; set; }
     }
 
+    public class Test
+    {
+        public MainMenu MainMenuReferance { get; set; }
+        public List<Cards> ListTestCards { get; set; }
+        public string RaoundWinner { get; set; }
+
+
+        public Test(List<Cards> midCardTest)
+        {
+            ListTestCards = midCardTest;
+        }
+
+        
+
+
+
+
+
+
+
+    }
 
 
 

@@ -55,9 +55,14 @@
             this.lblPlayer0Score = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.testMidPanelWinner = new System.Windows.Forms.PictureBox();
+            this.testMidPanel = new System.Windows.Forms.Panel();
+            this.gbTestBOX = new System.Windows.Forms.GroupBox();
             this.gbBetSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).BeginInit();
             this.gbGameInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testMidPanelWinner)).BeginInit();
+            this.gbTestBOX.SuspendLayout();
             this.SuspendLayout();
             // 
             // testPanel
@@ -312,11 +317,39 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Player Order:";
             // 
+            // testMidPanelWinner
+            // 
+            this.testMidPanelWinner.Location = new System.Drawing.Point(178, 166);
+            this.testMidPanelWinner.Margin = new System.Windows.Forms.Padding(2);
+            this.testMidPanelWinner.Name = "testMidPanelWinner";
+            this.testMidPanelWinner.Size = new System.Drawing.Size(69, 99);
+            this.testMidPanelWinner.TabIndex = 4;
+            this.testMidPanelWinner.TabStop = false;
+            // 
+            // testMidPanel
+            // 
+            this.testMidPanel.Location = new System.Drawing.Point(11, 166);
+            this.testMidPanel.Name = "testMidPanel";
+            this.testMidPanel.Size = new System.Drawing.Size(135, 99);
+            this.testMidPanel.TabIndex = 0;
+            // 
+            // gbTestBOX
+            // 
+            this.gbTestBOX.Controls.Add(this.testMidPanelWinner);
+            this.gbTestBOX.Controls.Add(this.testMidPanel);
+            this.gbTestBOX.Location = new System.Drawing.Point(1111, 12);
+            this.gbTestBOX.Name = "gbTestBOX";
+            this.gbTestBOX.Size = new System.Drawing.Size(263, 462);
+            this.gbTestBOX.TabIndex = 5;
+            this.gbTestBOX.TabStop = false;
+            this.gbTestBOX.Text = "Test Alanı";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(989, 512);
+            this.ClientSize = new System.Drawing.Size(1465, 512);
+            this.Controls.Add(this.gbTestBOX);
             this.Controls.Add(this.gbGameInfo);
             this.Controls.Add(this.gbBetSummary);
             this.Controls.Add(this.btn_Exit);
@@ -335,6 +368,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).EndInit();
             this.gbGameInfo.ResumeLayout(false);
             this.gbGameInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.testMidPanelWinner)).EndInit();
+            this.gbTestBOX.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -368,6 +403,9 @@
         public System.Windows.Forms.Label lblSpacialType;
         public System.Windows.Forms.GroupBox gbGameInfo;
         public System.Windows.Forms.Label lblPlayerOrder;
+        private System.Windows.Forms.PictureBox testMidPanelWinner;
+        private System.Windows.Forms.Panel testMidPanel;
+        private System.Windows.Forms.GroupBox gbTestBOX;
     }
 }
 
