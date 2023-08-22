@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.testPanel = new System.Windows.Forms.Panel();
             this.panelPlayer1 = new System.Windows.Forms.Panel();
             this.panelPlayer2 = new System.Windows.Forms.Panel();
             this.panelPlayer3 = new System.Windows.Forms.Panel();
@@ -56,21 +55,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.testMidPanelWinner = new System.Windows.Forms.PictureBox();
-            this.testMidPanel = new System.Windows.Forms.Panel();
-            this.gbTestBOX = new System.Windows.Forms.GroupBox();
             this.gbBetSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).BeginInit();
             this.gbGameInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.testMidPanelWinner)).BeginInit();
-            this.gbTestBOX.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // testPanel
-            // 
-            this.testPanel.Location = new System.Drawing.Point(9, 344);
-            this.testPanel.Name = "testPanel";
-            this.testPanel.Size = new System.Drawing.Size(320, 160);
-            this.testPanel.TabIndex = 0;
             // 
             // panelPlayer1
             // 
@@ -122,7 +111,7 @@
             // 
             // panel_Mid
             // 
-            this.panel_Mid.Location = new System.Drawing.Point(428, 224);
+            this.panel_Mid.Location = new System.Drawing.Point(356, 224);
             this.panel_Mid.Name = "panel_Mid";
             this.panel_Mid.Size = new System.Drawing.Size(135, 114);
             this.panel_Mid.TabIndex = 0;
@@ -319,37 +308,19 @@
             // 
             // testMidPanelWinner
             // 
-            this.testMidPanelWinner.Location = new System.Drawing.Point(178, 166);
+            this.testMidPanelWinner.Location = new System.Drawing.Point(539, 224);
             this.testMidPanelWinner.Margin = new System.Windows.Forms.Padding(2);
             this.testMidPanelWinner.Name = "testMidPanelWinner";
-            this.testMidPanelWinner.Size = new System.Drawing.Size(69, 99);
+            this.testMidPanelWinner.Size = new System.Drawing.Size(69, 114);
             this.testMidPanelWinner.TabIndex = 4;
             this.testMidPanelWinner.TabStop = false;
-            // 
-            // testMidPanel
-            // 
-            this.testMidPanel.Location = new System.Drawing.Point(11, 166);
-            this.testMidPanel.Name = "testMidPanel";
-            this.testMidPanel.Size = new System.Drawing.Size(135, 99);
-            this.testMidPanel.TabIndex = 0;
-            // 
-            // gbTestBOX
-            // 
-            this.gbTestBOX.Controls.Add(this.testMidPanelWinner);
-            this.gbTestBOX.Controls.Add(this.testMidPanel);
-            this.gbTestBOX.Location = new System.Drawing.Point(1111, 12);
-            this.gbTestBOX.Name = "gbTestBOX";
-            this.gbTestBOX.Size = new System.Drawing.Size(263, 462);
-            this.gbTestBOX.TabIndex = 5;
-            this.gbTestBOX.TabStop = false;
-            this.gbTestBOX.Text = "Test Alanı";
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1465, 512);
-            this.Controls.Add(this.gbTestBOX);
+            this.ClientSize = new System.Drawing.Size(989, 512);
+            this.Controls.Add(this.testMidPanelWinner);
             this.Controls.Add(this.gbGameInfo);
             this.Controls.Add(this.gbBetSummary);
             this.Controls.Add(this.btn_Exit);
@@ -359,24 +330,19 @@
             this.Controls.Add(this.panelPlayer1);
             this.Controls.Add(this.panelPlayer0);
             this.Controls.Add(this.panel_Mid);
-            this.Controls.Add(this.testPanel);
             this.Name = "MainMenu";
             this.Text = "Batak";
-            this.Load += new System.EventHandler(this.MainMenu_Load);
             this.gbBetSummary.ResumeLayout(false);
             this.gbBetSummary.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).EndInit();
             this.gbGameInfo.ResumeLayout(false);
             this.gbGameInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.testMidPanelWinner)).EndInit();
-            this.gbTestBOX.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel testPanel;
         private System.Windows.Forms.Panel panelPlayer1;
         private System.Windows.Forms.Panel panelPlayer2;
         private System.Windows.Forms.Panel panelPlayer3;
@@ -404,8 +370,6 @@
         public System.Windows.Forms.GroupBox gbGameInfo;
         public System.Windows.Forms.Label lblPlayerOrder;
         private System.Windows.Forms.PictureBox testMidPanelWinner;
-        private System.Windows.Forms.Panel testMidPanel;
-        private System.Windows.Forms.GroupBox gbTestBOX;
     }
 }
 

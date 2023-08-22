@@ -19,7 +19,6 @@ namespace Batak
         {
             InitializeComponent();
             betPageDialog.mainMenuPage = this;
-
         }
         //Global variables and Lists ---------------------------------------------------------------------------------------
 
@@ -145,16 +144,14 @@ namespace Batak
         #endregion
 
         #region Animation and Vizualition Methods
-
         /// <summary>
         /// Create Card's picture box for MainMenu
         /// </summary>
         /// <param name="PanelNo"></param>
         /// <param name="ListName"></param>
-        public void visualization(Control PanelNo, List<Cards> ListName)
+        public void Visualization(Control PanelNo, List<Cards> ListName)
         {
             panelList.Add(PanelNo);
-
             for (int i = 0; i < ListName.Count; i++)
             {
                 //Cards visualizations 
@@ -178,13 +175,13 @@ namespace Batak
         /// </summary>
         public void visualizationAllCards()
         {
+            panelList.Clear();
+            Visualization(panelPlayer0, player0Cards);
+            Visualization(panelPlayer1, player1Cards);
+            Visualization(panelPlayer2, player2Cards);
+            Visualization(panelPlayer3, player3Cards);
 
-            visualization(panelPlayer0, player0Cards);
-            visualization(panelPlayer1, player1Cards);
-            visualization(panelPlayer2, player2Cards);
-            visualization(panelPlayer3, player3Cards);
-
-            visualization(panel_Mid, midCards);
+            Visualization(panel_Mid, midCards);
         }
 
         public void picture_Click(object sender, EventArgs e)
@@ -204,8 +201,9 @@ namespace Batak
             panel_Mid.Controls.Add(cardPicturebox);
             cardPicturebox.BringToFront();
             cardPicturebox.Enabled = false;
-
-
+            
+            //visualizationAllCards();
+            //Check Round Ending 
             if (midCards.Count < 4)
             {
                 startRound();
@@ -312,20 +310,75 @@ namespace Batak
         }
 
         /// <summary>
+        /// The computer chooses which card to play and plays
+        /// </summary>
+        public void yzCardPlay(string player)
+        {
+            Random rnd = new Random();
+
+            List<Cards> yzChooseCardsProbabilities = new List<Cards>();
+            Cards YzSelectedCard;
+            if (player == "player1")
+            {
+
+                foreach (PictureBox cardPictureBox in panelPlayer1.Controls)
+                {
+                    if (cardPictureBox.Enabled)
+                    {
+                        yzChooseCardsProbabilities.Add((Cards)(cardPictureBox.Image.Tag));
+                    }
+                }
+                YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
+                midCards.Add(YzSelectedCard);
+                player1Cards.Remove(YzSelectedCard);
+            }
+            else if (player == "player2")
+            {
+
+                foreach (PictureBox cardPictureBox in panelPlayer2.Controls)
+                {
+                    if (cardPictureBox.Enabled)
+                    {
+                        yzChooseCardsProbabilities.Add((Cards)(cardPictureBox.Image.Tag));
+                    }
+                }
+                YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
+                midCards.Add(YzSelectedCard);
+                player2Cards.Remove(YzSelectedCard);
+            }
+            else if (player == "player3")
+            {
+
+                foreach (PictureBox cardPictureBox in panelPlayer3.Controls)
+                {
+                    if (cardPictureBox.Enabled)
+                    {
+                        yzChooseCardsProbabilities.Add((Cards)(cardPictureBox.Image.Tag));
+                    }
+                }
+                YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
+                midCards.Add(YzSelectedCard);
+                player3Cards.Remove(YzSelectedCard);
+            }
+        }
+
+        /// <summary>
         /// Allows players to play in clockwise order
         /// </summary>
         public void startRound()
         {
             //Disable all cards for next player playing
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < panelList.Count; i++)
             {
-                foreach (PictureBox CardsImage in panelList[i].Controls)
+                if (panelList[i].Controls.Count !=0)
                 {
-                    CardsImage.Enabled = false;
+                    foreach (PictureBox CardsImage in panelList[i].Controls)
+                    {
+                        CardsImage.Enabled = false;
+                    }
                 }
+                
             }
-
-
             //Whoever's turn is to enable their respective cards according to the game rules.
             if (startingPlayer == "player0")
             {
@@ -337,18 +390,22 @@ namespace Batak
             {
                 lblPlayerOrder.Text = "player1";
                 CardpPlayingRules(panelPlayer1);
+                yzCardPlay("player1");
                 startingPlayer = "player2";
             }
             else if (startingPlayer == "player2")
             {
                 lblPlayerOrder.Text = "player2";
                 CardpPlayingRules(panelPlayer2);
+                yzCardPlay("player2");
                 startingPlayer = "player3";
             }
             else if (startingPlayer == "player3")
+
             {
                 lblPlayerOrder.Text = "player3";
                 CardpPlayingRules(panelPlayer3);
+                yzCardPlay("player3");
                 startingPlayer = "player0";
             }
         }
@@ -411,10 +468,30 @@ namespace Batak
                 lblPlayer3Score.Text = ((Convert.ToInt32(lblPlayer3Score.Text)) + 1).ToString();
             }
 
+            //---------------------------Mid winner test-----------------------------------
+
+            testMidPanelWinner.Image = winnerCard.Image;
+            MessageBox.Show("Round bitti");
+            testMidPanelWinner.Image = null;
+            //------------------------------------------------------------------------------
+
             midCards.Clear();
             panel_Mid.Controls.Clear();
-            MessageBox.Show("Round bitti");
-            startRound();
+            //Checks game is over
+            int player0Score = Convert.ToInt32(lblPlayer0Score.Text);
+            int player1Score = Convert.ToInt32(lblPlayer1Score.Text);
+            int player2Score = Convert.ToInt32(lblPlayer2Score.Text);
+            int player3Score = Convert.ToInt32(lblPlayer3Score.Text);
+
+            if ((player0Score + player1Score + player2Score + player3Score) == 13)
+            {
+                MessageBox.Show("Game Over");
+            }
+            else
+            {
+                startRound();
+            }
+
 
         }
         public void clearLists()
@@ -454,11 +531,8 @@ namespace Batak
         {
             Application.Exit();
         }
-        private void MainMenu_Load(object sender, EventArgs e)
-        {
 
 
-        }
     }
     #endregion
     public class Cards
@@ -468,29 +542,4 @@ namespace Batak
         public Image Image { get; set; }
         public string Ownership { get; set; }
     }
-
-    public class Test
-    {
-        public MainMenu MainMenuReferance { get; set; }
-        public List<Cards> ListTestCards { get; set; }
-        public string RaoundWinner { get; set; }
-
-
-        public Test(List<Cards> midCardTest)
-        {
-            ListTestCards = midCardTest;
-        }
-
-        
-
-
-
-
-
-
-
-    }
-
-
-
 }

@@ -67,6 +67,7 @@ namespace Batak
 
         public void yzBetDetermination()
         {
+            
             // will update
             player1bet = rnd.Next(8, 13);
             player1bet = 8;
