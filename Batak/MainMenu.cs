@@ -37,7 +37,7 @@ namespace Batak
 
 
 
-        #region PrePlayMethods
+
         public void CreateDeck()
         {
             //Cards creation;
@@ -140,10 +140,6 @@ namespace Batak
 
         }
 
-
-        #endregion
-
-        #region Animation and Vizualition Methods
         /// <summary>
         /// Create Card's picture box for MainMenu
         /// </summary>
@@ -156,7 +152,9 @@ namespace Batak
             {
                 //Cards visualizations 
                 PictureBox picture = new PictureBox();
+
                 picture.Image = allPlayerHands[panelList.Count - 1][i].Image;
+
                 picture.Size = picture.Image.Size;
                 picture.Location = new Point(20 * i, 50);
                 panelList[panelList.Count - 1].Controls.Add(picture);
@@ -175,7 +173,10 @@ namespace Batak
         /// </summary>
         public void visualizationAllCards()
         {
-            panelList.Clear();
+            if (panelList.Count == 5)
+            {
+                panelList.Clear();
+            }
             Visualization(panelPlayer0, player0Cards);
             Visualization(panelPlayer1, player1Cards);
             Visualization(panelPlayer2, player2Cards);
@@ -201,7 +202,7 @@ namespace Batak
             panel_Mid.Controls.Add(cardPicturebox);
             cardPicturebox.BringToFront();
             cardPicturebox.Enabled = false;
-            
+
             //visualizationAllCards();
             //Check Round Ending 
             if (midCards.Count < 4)
@@ -213,9 +214,7 @@ namespace Batak
                 EvaluationMidCards();
             }
         }
-        #endregion
 
-        #region Game Situation
 
         /// <summary>
         /// Changing the enable feature of the relevant panel's controls according to the game rules
@@ -331,6 +330,10 @@ namespace Batak
                 YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
                 midCards.Add(YzSelectedCard);
                 player1Cards.Remove(YzSelectedCard);
+                if (midCards.Count < 5)
+                {
+                    startRound();
+                }
             }
             else if (player == "player2")
             {
@@ -345,6 +348,10 @@ namespace Batak
                 YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
                 midCards.Add(YzSelectedCard);
                 player2Cards.Remove(YzSelectedCard);
+                if (midCards.Count < 5)
+                {
+                    startRound();
+                }
             }
             else if (player == "player3")
             {
@@ -359,6 +366,10 @@ namespace Batak
                 YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
                 midCards.Add(YzSelectedCard);
                 player3Cards.Remove(YzSelectedCard);
+                if (midCards.Count < 5)
+                {
+                    startRound();
+                }
             }
         }
 
@@ -367,17 +378,18 @@ namespace Batak
         /// </summary>
         public void startRound()
         {
+            lblTest.Text = (midCards.Count).ToString();
             //Disable all cards for next player playing
             for (int i = 0; i < panelList.Count; i++)
             {
-                if (panelList[i].Controls.Count !=0)
+                if (panelList[i].Controls.Count != 0)
                 {
                     foreach (PictureBox CardsImage in panelList[i].Controls)
                     {
                         CardsImage.Enabled = false;
                     }
                 }
-                
+
             }
             //Whoever's turn is to enable their respective cards according to the game rules.
             if (startingPlayer == "player0")
@@ -385,6 +397,10 @@ namespace Batak
                 lblPlayerOrder.Text = "player0";
                 CardpPlayingRules(panelPlayer0);
                 startingPlayer = "player1";
+                if (midCards.Count == 4)
+                {
+                    EvaluationMidCards();
+                }
             }
             else if (startingPlayer == "player1")
             {
@@ -392,6 +408,10 @@ namespace Batak
                 CardpPlayingRules(panelPlayer1);
                 yzCardPlay("player1");
                 startingPlayer = "player2";
+                if (midCards.Count == 4)
+                {
+                    EvaluationMidCards();
+                }
             }
             else if (startingPlayer == "player2")
             {
@@ -399,14 +419,21 @@ namespace Batak
                 CardpPlayingRules(panelPlayer2);
                 yzCardPlay("player2");
                 startingPlayer = "player3";
+                if (midCards.Count == 4)
+                {
+                    EvaluationMidCards();
+                }
             }
             else if (startingPlayer == "player3")
-
             {
                 lblPlayerOrder.Text = "player3";
                 CardpPlayingRules(panelPlayer3);
                 yzCardPlay("player3");
                 startingPlayer = "player0";
+                if (midCards.Count == 4)
+                {
+                    EvaluationMidCards();
+                }
             }
         }
 
@@ -509,9 +536,7 @@ namespace Batak
             panelList.Clear();
 
         }
-        #endregion
-
-        #region Form Load and Button Properties
+      
         private void btn_NewGame_Click(object sender, EventArgs e)
         {
             clearLists();
@@ -521,7 +546,7 @@ namespace Batak
                 fixHand(playerhands);
             }
             visualizationAllCards();
-
+            
             betPageDialog.ShowDialog();
 
             startRound();
@@ -534,12 +559,7 @@ namespace Batak
 
 
     }
-    #endregion
-    public class Cards
-    {
-        public string Type { get; set; }
-        public int Value { get; set; }
-        public Image Image { get; set; }
-        public string Ownership { get; set; }
-    }
+
+
+
 }

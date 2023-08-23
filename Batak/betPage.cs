@@ -99,6 +99,7 @@ namespace Batak
             Close();
         }
 
+        //Bet Selection Butons
         private void btnPass_Click(object sender, EventArgs e)
         {
             player0bet = 0;
@@ -147,6 +148,7 @@ namespace Batak
             betComparasion();
         }
 
+        // Spacial Type Selection Buttons
         private void pbClub_Click(object sender, EventArgs e)
         {
             lblSpacialType.Text = "Clubs";
