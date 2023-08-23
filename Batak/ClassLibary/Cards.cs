@@ -2,7 +2,6 @@
 
 namespace Batak
 {
-    
     public class Cards
     {
         public string Type { get; set; }

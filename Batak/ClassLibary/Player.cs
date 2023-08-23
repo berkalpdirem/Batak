@@ -7,6 +7,8 @@ namespace Batak
     {
         public string Name = string.Empty;
 
+        public string NextPlayerName = string.Empty;
+
         public int Score;
 
         public int GenelScore;
@@ -14,6 +16,11 @@ namespace Batak
         public List<Cards> CardList;
 
         public Panel RelatedPanel;
+
+        public Player()
+        {
+             CardList = new List<Cards>();
+        }
 
     }
 
