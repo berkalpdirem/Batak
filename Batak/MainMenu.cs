@@ -21,7 +21,7 @@ namespace Batak
             betPageDialog.mainMenuPage = this;
         }
         //Global variables and Lists ---------------------------------------------------------------------------------------
-        public string startingPlayer;
+        public string startingPlayer = string.Empty;
         public List<Cards> midCards = new List<Cards>();
         public Player[] PlayerArray;
 
@@ -39,7 +39,8 @@ namespace Batak
             BatakMethods._lblPlayerOrder = lblPlayerOrder;
             BatakMethods._lblSpacialType = lblSpacialType;
 
-
+            List<Label>  ScoreLabelList = new List<Label>() { lblPlayer0Score , lblPlayer1Score , lblPlayer2Score , lblPlayer3Score };
+            BatakMethods._ScoreLabelList = ScoreLabelList;
             BatakMethods._lblPlayer0Score = lblPlayer0Score;
             BatakMethods._lblPlayer1Score = lblPlayer1Score;
             BatakMethods._lblPlayer2Score = lblPlayer2Score;
@@ -62,9 +63,10 @@ namespace Batak
             }
             //Players' Bets Are Taken
             betPageDialog.ShowDialog();
+            Postman();
             //Startted Round
             BatakMethods.startRound();
-
+            
         }
 
         private void btn_Exit_Click(object sender, EventArgs e)
@@ -93,14 +95,14 @@ namespace Batak
 
             //visualizationAllCards();
             //Check Round Ending 
-            //if (midCards.Count < 4)
-            //{
-            //    startRound();
-            //}
-            //else
-            //{
-            //    EvaluationMidCards();
-            //}
+            if (midCards.Count < 4)
+            {
+                BatakMethods.startRound();
+            }
+            else
+            {
+                BatakMethods.EvaluationMidCards();
+            }
         } 
     }
 }

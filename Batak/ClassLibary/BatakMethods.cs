@@ -20,6 +20,7 @@ namespace Batak
         public static Label _lblPlayer1Score;
         public static Label _lblPlayer2Score;
         public static Label _lblPlayer3Score;
+        public static List<Label> _ScoreLabelList;
 
         public static PictureBox _testMidPanelWinner;
 
@@ -165,7 +166,11 @@ namespace Batak
                 //Cards Events;
                 picture.Enabled = false;
 
-                picture.Click += new EventHandler(RelatedEvent);
+                if (RelatedEvent !=null)
+                {
+                    picture.Click += new EventHandler(RelatedEvent);
+                }
+                
                 //picture.DoubleClick += new EventHandler(picture_doubleClick);
             }
         }
@@ -190,10 +195,10 @@ namespace Batak
                     }
                     _lblPlayerOrder.Text = RelatedPlayer.Name;
 
-                    //CardpPlayingRules(RelatedPlayer.RelatedPanel);
+                    CardpPlayingRules(RelatedPlayer.RelatedPanel);
                     if (RelatedPlayer.Name != "player0")
                     {
-                        //yzCardPlay(RelatedPlayer.Name);
+                        yzCardPlay(RelatedPlayer.Name);
                     }
                     _startingPlayer = RelatedPlayer.NextPlayerName;
                     if (_midCards.Count == 4)
@@ -224,7 +229,6 @@ namespace Batak
                 {
                     winnerCard = relatedCard;
                 }
-
             }
             return winnerCard;
         }
@@ -245,27 +249,19 @@ namespace Batak
             }
             //Identification of the winner in the round
             Cards winnerCard = cardComparasionListCards(_midCards);
-            //testMidPanelWinner.Image = winnerCard.Image;
             _startingPlayer = winnerCard.Ownership;
-            if (_startingPlayer == "player0")
+
+            for (int i = 0; i < 4; i++)
             {
-                _lblPlayer0Score.Text = ((Convert.ToInt32(_lblPlayer0Score.Text)) + 1).ToString();
+                if (_PlayerArray[i].Name == _startingPlayer )
+                {
+                    _ScoreLabelList[i].Text = ((Convert.ToInt32(_ScoreLabelList[i].Text)) + 1).ToString();
+                }
             }
-            else if (_startingPlayer == "player1")
-            {
-                _lblPlayer1Score.Text = ((Convert.ToInt32(_lblPlayer1Score.Text)) + 1).ToString();
-            }
-            else if (_startingPlayer == "player2")
-            {
-                _lblPlayer2Score.Text = ((Convert.ToInt32(_lblPlayer2Score.Text)) + 1).ToString();
-            }
-            else if (_startingPlayer == "player3")
-            {
-                _lblPlayer3Score.Text = ((Convert.ToInt32(_lblPlayer3Score.Text)) + 1).ToString();
-            }
+
 
             //---------------------------Mid winner test-----------------------------------
-
+            Visualization(_PanelMid,_midCards,null);
             _testMidPanelWinner.Image = winnerCard.Image;
             MessageBox.Show("Round bitti");
             _testMidPanelWinner.Image = null;
@@ -278,7 +274,7 @@ namespace Batak
             int player1Score = Convert.ToInt32(_lblPlayer1Score.Text);
             int player2Score = Convert.ToInt32(_lblPlayer2Score.Text);
             int player3Score = Convert.ToInt32(_lblPlayer3Score.Text);
-
+            
             if ((player0Score + player1Score + player2Score + player3Score) == 13)
             {
                 MessageBox.Show("Game Over");
@@ -289,6 +285,131 @@ namespace Batak
             }
 
 
+        }
+
+
+        /// <summary>
+        /// Changing the enable feature of the relevant panel's controls according to the game rules
+        /// </summary>
+        /// <param name="selectedPanel"></param>
+        public static void CardpPlayingRules(Panel relatedPanel)
+        {
+            //Player can play the first card of the Round as player pleases.
+            if (_midCards.Count == 0)
+            {
+                foreach (PictureBox CardsImage in relatedPanel.Controls)
+                {
+                    CardsImage.Enabled = true;
+                }
+            }
+            //If the hand played is not the first hand of the round, it must be played according to the following rules
+            else
+            {
+                Cards firstPlayedCard = (Cards)_midCards[0];
+                Cards lastPlayedCard = (Cards)_midCards[_midCards.Count - 1];
+
+
+                //------------------------------------------------------Simple Rules-------------------------------------------
+
+                //Obligation to throw a card from the first type of card thrown
+                //And obligation to throw the larger card than the first discarded card
+                foreach (PictureBox CardsImage in relatedPanel.Controls)
+                {
+                    Cards selectedCard = (Cards)CardsImage.Image.Tag;
+                    if (firstPlayedCard.Type == selectedCard.Type && cardComparasionListCards(_midCards).Value < selectedCard.Value)
+                    {
+                        CardsImage.Enabled = true;
+                    }
+                }
+
+                //------------------------------------------------------Complex Rules-------------------------------------------
+
+                //If all cards are disenable, the smaller card of the first throwed type must be discarded.
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        Cards selectedCard = (Cards)CardsImage.Image.Tag;
+                        if (firstPlayedCard.Type == selectedCard.Type)
+                        {
+                            CardsImage.Enabled = true;
+                        }
+                    }
+                }
+
+                //If player still can't throw cards, special cards will be activated
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        Cards card = (Cards)CardsImage.Image.Tag;
+                        if (card.Type == _lblSpacialType.Text)
+                        {
+                            CardsImage.Enabled = true;
+                        }
+                    }
+                }
+
+                //If player doesn't have a special card, player can discard any card player wants.
+
+                if (allCardsDisenable(relatedPanel))
+                {
+                    foreach (PictureBox CardsImage in relatedPanel.Controls)
+                    {
+                        CardsImage.Enabled = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// // Checking the enable property of all cards to be false to related panel
+        /// </summary>
+        /// <param name="relatedPanel"></param>
+        /// <returns></returns>
+        public static bool allCardsDisenable(Panel relatedPanel)
+        {
+            bool result = true;
+            foreach (PictureBox CardsImage in relatedPanel.Controls)
+            {
+                if (CardsImage.Enabled)
+                {
+                    return false;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// The computer chooses which card to play and plays
+        /// </summary>
+        public static void yzCardPlay(string player)
+        {
+            Random rnd = new Random();
+
+            List<Cards> yzChooseCardsProbabilities = new List<Cards>();
+            Cards YzSelectedCard;
+
+            foreach (Player RelatedPlayer in _PlayerArray)
+            {
+                if (RelatedPlayer.Name == player)
+                {
+                    foreach (PictureBox cardPictureBox in RelatedPlayer.RelatedPanel.Controls)
+                    {
+                        if (cardPictureBox.Enabled)
+                        {
+                            yzChooseCardsProbabilities.Add((Cards)(cardPictureBox.Image.Tag));
+                        }
+                    }
+                    YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
+                    _midCards.Add(YzSelectedCard);
+                    RelatedPlayer.CardList.Remove(YzSelectedCard);
+                    if (_midCards.Count < 5)
+                    {
+                        startRound();
+                    }
+                }
+            }
         }
 
     }
