@@ -25,10 +25,34 @@ namespace Batak
         public List<Cards> midCards = new List<Cards>();
         public Player[] PlayerArray;
 
+        /// <summary>
+        /// Sending importand form elements to BatakMethods
+        /// </summary>
+        public void Postman()
+        {
+            BatakMethods._PlayerArray = PlayerArray;
+            BatakMethods._startingPlayer = startingPlayer;
+
+            BatakMethods._midCards = midCards;
+            BatakMethods._PanelMid = panel_Mid;
+
+            BatakMethods._lblPlayerOrder = lblPlayerOrder;
+            BatakMethods._lblSpacialType = lblSpacialType;
+
+
+            BatakMethods._lblPlayer0Score = lblPlayer0Score;
+            BatakMethods._lblPlayer1Score = lblPlayer1Score;
+            BatakMethods._lblPlayer2Score = lblPlayer2Score;
+            BatakMethods._lblPlayer3Score = lblPlayer3Score;
+
+            BatakMethods._testMidPanelWinner = testMidPanelWinner;
+        }
         private void btn_NewGame_Click(object sender, EventArgs e)
         {
+            Postman();
             PlayerArray = BatakMethods.CreateDeck();
             Panel[] PanelArray = new Panel[] { panelPlayer0, panelPlayer1, panelPlayer2, panelPlayer3 };
+
             //All Player's Hands Are Sorted and Visualized
             for (int i = 0; i < 4; i++)
             {
@@ -38,7 +62,8 @@ namespace Batak
             }
             //Players' Bets Are Taken
             betPageDialog.ShowDialog();
-
+            //Startted Round
+            BatakMethods.startRound();
 
         }
 
@@ -76,6 +101,6 @@ namespace Batak
             //{
             //    EvaluationMidCards();
             //}
-        }
+        } 
     }
 }
