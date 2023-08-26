@@ -19,6 +19,7 @@ namespace Batak
         {
             InitializeComponent();
             betPageDialog.mainMenuPage = this;
+            BatakMethods.mainMenuPage = this;
         }
         //Global variables and Lists ---------------------------------------------------------------------------------------
         public string startingPlayer = string.Empty;
@@ -50,6 +51,7 @@ namespace Batak
         }
         private void btn_NewGame_Click(object sender, EventArgs e)
         {
+            BatakMethods.clearLists();
             Postman();
             PlayerArray = BatakMethods.CreateDeck();
             Panel[] PanelArray = new Panel[] { panelPlayer0, panelPlayer1, panelPlayer2, panelPlayer3 };
@@ -66,7 +68,15 @@ namespace Batak
             Postman();
             //Startted Round
             BatakMethods.startRound();
-            
+            //Refreshing the visuals before the player plays
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    PlayerArray[i].RelatedPanel.Controls.Clear();
+            //    BatakMethods.Visualization(PanelArray[i], PlayerArray[i].CardList, picture_Click);
+            //}
+            //panel_Mid.Controls.Clear();
+            //BatakMethods.Visualization(panel_Mid,midCards,null);
+            //BatakMethods.CardpPlayingRules(PlayerArray[0].RelatedPanel);
         }
 
         private void btn_Exit_Click(object sender, EventArgs e)
@@ -74,7 +84,11 @@ namespace Batak
             Application.Exit();
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void picture_Click(object sender, EventArgs e)
         {
             PictureBox cardPicturebox = (sender as PictureBox);
@@ -93,10 +107,10 @@ namespace Batak
             cardPicturebox.BringToFront();
             cardPicturebox.Enabled = false;
 
-            //visualizationAllCards();
             //Check Round Ending 
             if (midCards.Count < 4)
             {
+                BatakMethods._startingPlayer = "player1";
                 BatakMethods.startRound();
             }
             else
