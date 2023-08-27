@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Batak
@@ -266,16 +267,18 @@ namespace Batak
 
 
             //---------------------------When Round Over-----------------------------------
+            _PanelMid.Controls.Clear();
             Visualization(_PanelMid, _midCards, null);
             _testMidPanelWinner.Image = winnerCard.Image;
 
             for (int i = 0; i < 4; i++)
             {
+                
                 _PlayerArray[i].RelatedPanel.Controls.Clear();
                 Visualization(_PlayerArray[i].RelatedPanel , _PlayerArray[i].CardList , mainMenuPage.picture_Click);
             }
 
-            MessageBox.Show("Round Bitti");
+            MessageBox.Show($"{winnerCard.Ownership} Eli Kazandı");
 
             //------------------------------------------------------------------------------
             _testMidPanelWinner.Image = null;
@@ -406,6 +409,7 @@ namespace Batak
             {
                 if (RelatedPlayer.Name == player)
                 {
+                    //Determining cards that AI can Throw
                     foreach (PictureBox cardPictureBox in RelatedPlayer.RelatedPanel.Controls)
                     {
                         if (cardPictureBox.Enabled)
@@ -413,9 +417,19 @@ namespace Batak
                             yzChooseCardsProbabilities.Add((Cards)(cardPictureBox.Image.Tag));
                         }
                     }
+                    //Selecting and throwing a card from among the cards that the AI can thrpwing
                     YzSelectedCard = yzChooseCardsProbabilities[rnd.Next(0, yzChooseCardsProbabilities.Count)];
                     _midCards.Add(YzSelectedCard);
                     RelatedPlayer.CardList.Remove(YzSelectedCard);
+                    //Reflesh MidCards Visualization
+                    Thread.Sleep(1000);
+                    _PanelMid.Controls.Clear();
+                    Visualization(_PanelMid, _midCards, null);
+
+                    //Refreshing the Visuals of Player Cards
+                    RelatedPlayer.RelatedPanel.Controls.Clear();
+                    Visualization(RelatedPlayer.RelatedPanel, RelatedPlayer.CardList,mainMenuPage.picture_Click);
+
                     if (_midCards.Count != 4)
                     {
                         _startingPlayer = RelatedPlayer.NextPlayerName;

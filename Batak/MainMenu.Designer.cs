@@ -55,7 +55,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.testMidPanelWinner = new System.Windows.Forms.PictureBox();
-            this.lblTest = new System.Windows.Forms.Label();
             this.gbBetSummary.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbSpacialType)).BeginInit();
             this.gbGameInfo.SuspendLayout();
@@ -116,9 +115,9 @@
             // 
             // panel_Mid
             // 
-            this.panel_Mid.Location = new System.Drawing.Point(356, 224);
+            this.panel_Mid.Location = new System.Drawing.Point(356, 178);
             this.panel_Mid.Name = "panel_Mid";
-            this.panel_Mid.Size = new System.Drawing.Size(135, 114);
+            this.panel_Mid.Size = new System.Drawing.Size(135, 160);
             this.panel_Mid.TabIndex = 0;
             this.panel_Mid.Tag = "Mid";
             // 
@@ -314,28 +313,18 @@
             // 
             // testMidPanelWinner
             // 
-            this.testMidPanelWinner.Location = new System.Drawing.Point(539, 224);
+            this.testMidPanelWinner.Location = new System.Drawing.Point(556, 225);
             this.testMidPanelWinner.Margin = new System.Windows.Forms.Padding(2);
             this.testMidPanelWinner.Name = "testMidPanelWinner";
-            this.testMidPanelWinner.Size = new System.Drawing.Size(69, 114);
+            this.testMidPanelWinner.Size = new System.Drawing.Size(85, 113);
             this.testMidPanelWinner.TabIndex = 4;
             this.testMidPanelWinner.TabStop = false;
-            // 
-            // lblTest
-            // 
-            this.lblTest.AutoSize = true;
-            this.lblTest.Location = new System.Drawing.Point(356, 188);
-            this.lblTest.Name = "lblTest";
-            this.lblTest.Size = new System.Drawing.Size(38, 13);
-            this.lblTest.TabIndex = 5;
-            this.lblTest.Text = "lblTest";
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(989, 512);
-            this.Controls.Add(this.lblTest);
             this.Controls.Add(this.testMidPanelWinner);
             this.Controls.Add(this.gbGameInfo);
             this.Controls.Add(this.gbBetSummary);
@@ -355,7 +344,6 @@
             this.gbGameInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.testMidPanelWinner)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -387,7 +375,6 @@
         public System.Windows.Forms.GroupBox gbGameInfo;
         public System.Windows.Forms.Label lblPlayerOrder;
         private System.Windows.Forms.PictureBox testMidPanelWinner;
-        private System.Windows.Forms.Label lblTest;
     }
 }
 

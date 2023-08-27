@@ -94,7 +94,7 @@ namespace Batak
             PictureBox cardPicturebox = (sender as PictureBox);
             Cards relatedCard = cardPicturebox.Image.Tag as Cards;
 
-            cardPicturebox.Location = new Point(midCards.Count * 20, 0);
+            cardPicturebox.Location = new Point(midCards.Count * 20, 50);
             for (int i = 0; i < 4; i++)
             {
                 if (relatedCard.Ownership == PlayerArray[i].Name)
@@ -117,6 +117,7 @@ namespace Batak
             {
                 BatakMethods.EvaluationMidCards();
             }
-        } 
+        }
+
     }
 }
